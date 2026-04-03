@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake Shopify Store</title>
+  <style>
+    body { margin:0; font-family:Arial, sans-serif; background:#f6f6f6; }
+    /* HEADER */
+    header { background:white; border-bottom:1px solid #ddd; padding:20px 40px; display:flex; justify-content:space-between; align-items:center; }
+    .logo { font-size:24px; font-weight:bold; }
+    nav a { margin-left:20px; text-decoration:none; color:black; font-weight:500; }
+
+    /* HERO */
+    .hero { background:url('https://images.unsplash.com/photo-1556742400-b5b7c5121f5a') center/cover no-repeat; height:60vh; display:flex; align-items:center; justify-content:center; color:white; text-align:center; padding:30px; }
+    .hero h1 { font-size:48px; text-shadow:0 0 15px rgba(0,0,0,0.6); }
+    .hero p { font-size:20px; max-width:500px; text-shadow:0 0 10px rgba(0,0,0,0.5); }
+    .hero button { margin-top:20px; padding:15px 30px; background:black; color:white; border:none; border-radius:8px; font-size:18px; cursor:pointer; }
+
+    /* PRODUCTS */
+    .products { padding:40px; max-width:1200px; margin:auto; }
+    .products h2 { margin-bottom:20px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:25px; }
+    .item { background:white; border-radius:15px; padding:15px; box-shadow:0 3px 10px rgba(0,0,0,0.1); }
+    .item img { width:100%; border-radius:12px; }
+    .item h3 { margin:10px 0 5px 0; font-size:18px; }
+    .item p { margin:0; color:#444; }
+    .item button { width:100%; padding:12px; margin-top:10px; border:none; background:#008060; color:white; border-radius:8px; font-size:16px; cursor:pointer; }
+    .item button:hover { background:#006647; }
+
+    /* FOOTER */
+    footer { background:black; color:white; padding:40px; margin-top:50px; text-align:center; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MyFakeShop</div>
+  <nav>
+    <a href="#">Hem</a>
+    <a href="#">Produkter</a>
+    <a href="#">Kontakt</a>
+    <a href="#">Varukorg</a>
+  </nav>
+</header>
+
+<div style="background:#fff; padding:20px 40px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between; align-items:center;">
+  <div style="font-size:18px; font-weight:600;">Saldo: <span id='balance'>0</span> kr</div>
+  <button onclick="addMoney()" style="padding:10px 20px; background:#008060; color:white; border:none; border-radius:6px; cursor:pointer;">Lägg till pengar</button>
+</div>
+
+<div class="hero">
+  <div>
+    <h1>Ny kollektion ute nu</h1>
+    <p>Shoppa vår senaste kollektion med premium produkter. Enkelt, snyggt och helt fejk – men perfekt för ett projekt.</p>
+    <button>Shoppa nu</button>
+  </div>
+</div>
+
+<section class="products">
+  <h2>Utvalda produkter</h2>
+  <div class="grid">
+
+    <div class="item">
+      <img src="https://via.placeholder.com/400x400" />
+      <h3>Premium Hoodie</h3>
+      <p>699 kr</p>
+      <button>Lägg i varukorg</button>
+    </div>
+
+    <div class="item">
+      <img src="https://via.placeholder.com/400x400" />
+      <h3>Vintage Sneakers</h3>
+      <p>1199 kr</p>
+      <button>Lägg i varukorg</button>
+    </div>
+
+    <div class="item">
+      <img src="https://via.placeholder.com/400x400" />
+      <h3>Luxury Cap</h3>
+      <p>299 kr</p>
+      <button>Lägg i varukorg</button>
+    </div>
+
+    <div class="item">
+      <img src="https://via.placeholder.com/400x400" />
+      <h3>Street Bag</h3>
+      <p>499 kr</p>
+      <button>Lägg i varukorg</button>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 MyFakeShop — Detta är en demo och inte en riktig butik.
+</footer>
+
+  <script>
+    let balance = 0;
+    let cart = 0;
+
+    function addMoney() {
+      const amount = prompt('Hur mycket pengar vill du lägga till?');
+      const value = parseInt(amount);
+      if (!isNaN(value) && value > 0) {
+        balance += value;
+        document.getElementById('balance').innerText = balance;
+      }
+    }
+
+    function addToCart(price) {
+      if (balance >= price) {
+        balance -= price;
+        cart++;
+        document.getElementById('balance').innerText = balance;
+        alert('Produkten köpt!');
+      } else {
+        alert('Du har inte tillräckligt med saldo.');
+      }
+    }
+  </script>
+
+</body>
+</html>
