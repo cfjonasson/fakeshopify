@@ -6,7 +6,7 @@
 <title>Fake Shopify Dashboard</title>
 <style>
   body { margin:0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background:#f6f6f7; }
-  
+
   /* SIDEBAR */
   .sidebar {
     width:260px; height:100vh; background:#111827; position:fixed;
@@ -87,7 +87,6 @@
     </div>
   </div>
 
-  <!-- Lägg till produkter -->
   <h2>Produkter</h2>
   <div class="card">
     <input id="product-name" placeholder="Produktnamn">
@@ -95,7 +94,6 @@
     <ul id="product-list"></ul>
   </div>
 
-  <!-- Lägg till kunder -->
   <h2>Kunder</h2>
   <div class="card">
     <input id="customer-name" placeholder="Kundnamn">
@@ -103,7 +101,6 @@
     <ul id="customer-list"></ul>
   </div>
 
-  <!-- Orders Table -->
   <h2>Orders</h2>
   <div class="card">
     <table>
@@ -114,66 +111,74 @@
     </table>
   </div>
 
-  <!-- Settings -->
   <h2>Inställningar</h2>
   <div class="card">
     <label>Butiksnamn:</label>
     <input id="shop-name">
     <button class="btn" onclick="saveSettings()">Spara</button>
   </div>
-
 </div>
 
 <script>
 let sales = 0, orders = 0, visitors = 0;
 
+// Uppdaterar alla värden på sidan
 function updateDashboard() {
   document.getElementById('sales').innerText = sales + ' kr';
   document.getElementById('orders').innerText = orders;
   document.getElementById('visitors').innerText = visitors;
 }
 
+// Knappar
 function addSales() {
   const amount = prompt('Hur mycket vill du lägga till i försäljning?');
   const num = parseInt(amount);
-  if (!isNaN(num) && num>0) { sales+=num; updateDashboard(); }
+  if (!isNaN(num) && num>0) {
+    sales += num;
+    updateDashboard();
+  }
 }
 
 function addOrder() {
   orders++;
   const table = document.getElementById('order-table');
   const row = table.insertRow();
-  row.insertCell(0).innerText = 'ORD'+Math.floor(Math.random()*1000);
-  row.insertCell(1).innerText = (Math.floor(Math.random()*5000)+100)+' kr';
+  row.insertCell(0).innerText = 'ORD' + Math.floor(Math.random()*1000);
+  row.insertCell(1).innerText = (Math.floor(Math.random()*5000)+100) + ' kr';
   row.insertCell(2).innerText = 'Pending';
   updateDashboard();
 }
 
-function addVisitor() { visitors++; updateDashboard(); }
+function addVisitor() {
+  visitors++;
+  updateDashboard();
+}
 
 function addProduct() {
-  const name = document.getElementById('product-name').value;
+  const name = document.getElementById('product-name').value.trim();
   if(name) {
-    const li = document.createElement('li'); li.innerText=name;
+    const li = document.createElement('li'); li.innerText = name;
     document.getElementById('product-list').appendChild(li);
-    document.getElementById('product-name').value='';
-  }
+    document.getElementById('product-name').value = '';
+  } else { alert("Skriv ett produktnamn!"); }
 }
 
 function addCustomer() {
-  const name = document.getElementById('customer-name').value;
+  const name = document.getElementById('customer-name').value.trim();
   if(name) {
-    const li = document.createElement('li'); li.innerText=name;
+    const li = document.createElement('li'); li.innerText = name;
     document.getElementById('customer-list').appendChild(li);
-    document.getElementById('customer-name').value='';
-  }
+    document.getElementById('customer-name').value = '';
+  } else { alert("Skriv ett kundnamn!"); }
 }
 
 function saveSettings() {
-  const name = document.getElementById('shop-name').value;
+  const name = document.getElementById('shop-name').value.trim();
   if(name) alert('Butiksnamn sparat: ' + name);
+  else alert('Ange ett namn först!');
 }
 
+// Init
 updateDashboard();
 </script>
 
