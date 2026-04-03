@@ -9,23 +9,27 @@
 
     /* SIDEBAR */
     .sidebar {
-      width:240px; height:100vh; background:white; position:fixed;
-      border-right:1px solid #ddd; padding:20px; box-sizing:border-box;
+      width:260px; height:100vh; background:#111827; position:fixed;
+      border-right:1px solid #1f2937; padding:20px; box-sizing:border-box;
+      color:white;
+      display:flex; flex-direction:column;
     }
     .sidebar h2 { margin:0 0 30px 0; font-size:22px; }
     .sidebar a {
-      display:block; padding:12px 0; text-decoration:none; color:black;
-      font-size:16px; font-weight:500;
+      display:flex; align-items:center; gap:10px;
+      padding:12px 0; text-decoration:none; color:#d1d5db;
+      font-size:16px; font-weight:500; cursor:pointer;
     }
-    .sidebar a:hover { color:#008060; }
+    .sidebar a:hover, .sidebar a.active { color:#08b57c; }
 
     /* MAIN */
     .main {
-      margin-left:240px; padding:30px; box-sizing:border-box;
+      margin-left:260px; padding:30px; box-sizing:border-box;
     }
 
     .cards {
       display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:20px;
+      margin-bottom:20px;
     }
     .card {
       background:white; padding:20px; border-radius:10px;
@@ -39,99 +43,182 @@
       border-radius:6px; cursor:pointer; margin-top:10px;
     }
 
+    /* Hidden panels */
+    .panel { display:none; }
+    .panel.active { display:block; }
+
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:10px; text-align:left; border-bottom:1px solid #ccc; }
+
+    input { padding:8px; width:100%; margin-top:5px; margin-bottom:10px; box-sizing:border-box; }
   </style>
 </head>
 <body>
 
 <div class="sidebar">
   <h2>Fake Shopify</h2>
-  <a href="#">Dashboard</a>
-  <a href="#">Orders</a>
-  <a href="#">Products</a>
-  <a href="#">Analytics</a>
-  <a href="#">Settings</a>
+  <a onclick="showPanel('dashboard')" class="active">Dashboard</a>
+  <a onclick="showPanel('add-sales')">Lägg till pengar</a>
+  <a onclick="showPanel('add-order')">Lägg till order</a>
+  <a onclick="showPanel('add-visitor')">Lägg till besökare</a>
+  <a onclick="showPanel('add-product')">Lägg till produkt</a>
+  <a onclick="showPanel('add-customer')">Lägg till kund</a>
+  <a onclick="showPanel('settings')">Inställningar</a>
 </div>
 
 <div class="main">
-  <h1>Dashboard</h1>
-  <p>En fejkad version av Shopify Admin.</p>
-
-  <div class="cards">
-
-    <div class="card">
-      <h3>Total försäljning</h3>
-      <div class="value" id="sales">0 kr</div>
-      <button class="btn" onclick="addSales()">Lägg till pengar</button>
+  <!-- Dashboard Panel -->
+  <div id="dashboard" class="panel active">
+    <h1>Dashboard</h1>
+    <p>En fejkad version av Shopify Admin.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>Total försäljning</h3>
+        <div class="value" id="sales">0 kr</div>
+      </div>
+      <div class="card">
+        <h3>Antal orders</h3>
+        <div class="value" id="orders">0</div>
+      </div>
+      <div class="card">
+        <h3>Besökare idag</h3>
+        <div class="value" id="visitors">0</div>
+      </div>
     </div>
-
-    <div class="card">
-      <h3>Antal orders</h3>
-      <div class="value" id="orders">0</div>
-      <button class="btn" onclick="addOrder()">Lägg till order</button>
-    </div>
-
-    <div class="card">
-      <h3>Besökare idag</h3>
-      <div class="value" id="visitors">0</div>
-      <button class="btn" onclick="addVisitor()">Öka besökare</button>
-    </div>
-
   </div>
 
-<h2>Produkter</h2>
-<div class="card">
-  <p>Hantera dina produkter:</p>
-  <button class="btn" onclick="addProduct()">Lägg till produkt</button>
-  <ul id="product-list"></ul>
-</div>
+  <!-- Lägg till pengar -->
+  <div id="add-sales" class="panel">
+    <h2>Lägg till pengar</h2>
+    <button class="btn" onclick="addSales()">Lägg till pengar</button>
+    <p>Nuvarande total försäljning: <span id="sales2">0 kr</span></p>
+  </div>
 
-<h2>Orders</h2>
-<div class="card">
-  <table style="width:100%; border-collapse:collapse;">
-    <thead>
-      <tr style="border-bottom:1px solid #ccc;"><th>Order ID</th><th>Belopp</th><th>Status</th></tr>
-    </thead>
-    <tbody id="order-table"></tbody>
-  </table>
-</div>
+  <!-- Lägg till order -->
+  <div id="add-order" class="panel">
+    <h2>Lägg till order</h2>
+    <button class="btn" onclick="addOrder()">Lägg till order</button>
+    <p>Nuvarande antal orders: <span id="orders2">0</span></p>
+  </div>
 
-<h2>Customers</h2>
-<div class="card">
-  <ul id="customer-list"></ul>
-  <button class="btn" onclick="addCustomer()">Lägg till kund</button>
-</div>
+  <!-- Lägg till besökare -->
+  <div id="add-visitor" class="panel">
+    <h2>Lägg till besökare</h2>
+    <button class="btn" onclick="addVisitor()">Öka besökare</button>
+    <p>Nuvarande antal besökare: <span id="visitors2">0</span></p>
+  </div>
 
-<h2>Settings</h2>
-<div class="card">
-  <p>Fake Shopify inställningar:</p>
-  <label>Butiksnamn:</label>
-  <input id="shop-name" style="padding:8px; width:100%; margin-top:5px;">
-  <button class="btn" onclick="saveSettings()">Spara</button>
+  <!-- Lägg till produkt -->
+  <div id="add-product" class="panel">
+    <h2>Lägg till produkt</h2>
+    <input id="product-name" placeholder="Produktnamn">
+    <button class="btn" onclick="addProduct()">Lägg till produkt</button>
+    <ul id="product-list"></ul>
+  </div>
+
+  <!-- Lägg till kund -->
+  <div id="add-customer" class="panel">
+    <h2>Lägg till kund</h2>
+    <input id="customer-name" placeholder="Kundnamn">
+    <button class="btn" onclick="addCustomer()">Lägg till kund</button>
+    <ul id="customer-list"></ul>
+  </div>
+
+  <!-- Settings -->
+  <div id="settings" class="panel">
+    <h2>Inställningar</h2>
+    <label>Butiksnamn:</label>
+    <input id="shop-name">
+    <button class="btn" onclick="saveSettings()">Spara</button>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="card" style="margin-top:20px;">
+    <h2>Orders</h2>
+    <table>
+      <thead>
+        <tr><th>Order ID</th><th>Belopp</th><th>Status</th></tr>
+      </thead>
+      <tbody id="order-table"></tbody>
+    </table>
+  </div>
+
 </div>
 
 <script>
-  let sales = 0;
-  let orders = 0;
-  let visitors = 0;
+let sales = 0;
+let orders = 0;
+let visitors = 0;
 
-  function addSales() {
-    const amount = prompt('Hur mycket vill du lägga till i försäljning?');
-    const num = parseInt(amount);
-    if (!isNaN(num) && num > 0) {
-      sales += num;
-      document.getElementById('sales').innerText = sales + ' kr';
-    }
-  }
+function updateDashboard() {
+  document.getElementById('sales').innerText = sales + ' kr';
+  document.getElementById('sales2').innerText = sales + ' kr';
+  document.getElementById('orders').innerText = orders;
+  document.getElementById('orders2').innerText = orders;
+  document.getElementById('visitors').innerText = visitors;
+  document.getElementById('visitors2').innerText = visitors;
+}
 
-  function addOrder() {
-    orders++;
-    document.getElementById('orders').innerText = orders;
+function addSales() {
+  const amount = prompt('Hur mycket vill du lägga till i försäljning?');
+  const num = parseInt(amount);
+  if (!isNaN(num) && num > 0) {
+    sales += num;
+    updateDashboard();
   }
+}
 
-  function addVisitor() {
-    visitors++;
-    document.getElementById('visitors').innerText = visitors;
+function addOrder() {
+  orders++;
+  const table = document.getElementById('order-table');
+  const row = table.insertRow();
+  row.insertCell(0).innerText = 'ORD' + Math.floor(Math.random()*1000);
+  row.insertCell(1).innerText = (Math.floor(Math.random()*5000)+100) + ' kr';
+  row.insertCell(2).innerText = 'Pending';
+  updateDashboard();
+}
+
+function addVisitor() {
+  visitors++;
+  updateDashboard();
+}
+
+function addProduct() {
+  const name = document.getElementById('product-name').value;
+  if (name) {
+    const list = document.getElementById('product-list');
+    const li = document.createElement('li');
+    li.innerText = name;
+    list.appendChild(li);
+    document.getElementById('product-name').value = '';
   }
+}
+
+function addCustomer() {
+  const name = document.getElementById('customer-name').value;
+  if (name) {
+    const list = document.getElementById('customer-list');
+    const li = document.createElement('li');
+    li.innerText = name;
+    list.appendChild(li);
+    document.getElementById('customer-name').value = '';
+  }
+}
+
+function saveSettings() {
+  const name = document.getElementById('shop-name').value;
+  if (name) alert('Butiksnamn sparat: ' + name);
+}
+
+// Sidebar panel switch
+function showPanel(panelId) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+updateDashboard();
 </script>
 
 </body>
